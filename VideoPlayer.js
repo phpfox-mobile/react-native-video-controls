@@ -379,7 +379,11 @@ export default class VideoPlayer extends Component {
                         easing: Easing.linear,
                     }
                 ),
-            ]).start( this.loadAnimation.bind( this ) );
+            ]).start(() => {
+                if (this.mounted) {
+                    this.loadAnimation()
+                }
+            });
         }
     }
 
