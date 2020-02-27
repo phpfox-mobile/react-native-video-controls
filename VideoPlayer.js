@@ -11,8 +11,9 @@ import {
     Easing,
     Image,
     View,
-    Text
-} from 'react-native';
+    Text,
+    I18nManager
+} from 'react-native'
 import _ from 'lodash';
 
 export default class VideoPlayer extends Component {
@@ -744,7 +745,8 @@ export default class VideoPlayer extends Component {
              * When panning, update the seekbar position, duh.
              */
             onPanResponderMove: ( evt, gestureState ) => {
-                const position = this.state.seekerOffset + gestureState.dx;
+                const position = this.state.seekerOffset
+                  + gestureState.dx * (I18nManager.isRTL ? -1 : 1);
                 this.setSeekerPosition( position );
             },
 
@@ -905,8 +907,7 @@ export default class VideoPlayer extends Component {
                 source={ require( './assets/img/back.png' ) }
                 style={ styles.controls.back }
             />,
-            this.events.onBack,
-            styles.controls.back
+            this.events.onBack
         );
     }
 
@@ -1217,7 +1218,10 @@ const styles = {
             resizeMode: 'stretch'
         },
         control: {
-            padding: 16,
+            padding: 8,
+        },
+        back: {
+            transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }]
         },
         text: {
             backgroundColor: 'transparent',
